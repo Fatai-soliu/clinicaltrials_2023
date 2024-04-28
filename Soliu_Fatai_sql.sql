@@ -150,13 +150,19 @@ SELECT * FROM bdtt_task.pharma LIMIT 5
 
 -- COMMAND ----------
 
--- DBTITLE 1,Question 1: Number of Distinct study
-SELECT COUNT (Id) AS Number_of_study
+-- DBTITLE 1,Question 1: Number of Distinct study - View
+CREATE OR REPLACE TEMP VIEW Number_of_distinct_study AS SELECT COUNT (Id) AS Number_of_study
 FROM bdtt_task.clinicaltrial2023
 
 -- COMMAND ----------
 
--- DBTITLE 1,Question 2: Types of studies and frequencies
+-- DBTITLE 1,Question 1: Number of Distinct study - Result
+SELECT * FROM Number_of_distinct_study
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Question 2: Types of studies and frequencies - View
+CREATE OR REPLACE TEMP VIEW Type_of_study AS
 SELECT Type, COUNT(Id) AS count
 FROM bdtt_task.clinicaltrial2023
 GROUP BY 1
@@ -164,7 +170,13 @@ ORDER BY 2 DESC
 
 -- COMMAND ----------
 
--- DBTITLE 1,Question 3: Top 5 Conditions and frequencies
+-- DBTITLE 1,Question 2: Types of studies and frequencies - Result
+SELECT * FROM Type_of_study
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Question 3: Top 5 Conditions and frequencies - View
+CREATE OR REPLACE TEMP VIEW Top_5_conditions AS
 SELECT Conditions, COUNT(Id) AS count
 FROM bdtt_task.clinicaltrial2023
 GROUP BY 1
@@ -172,8 +184,13 @@ ORDER BY 2 DESC LIMIT 5
 
 -- COMMAND ----------
 
--- DBTITLE 1,Question 4: 10 most common non-pharma company
+-- DBTITLE 1,Question 3: Top 5 Conditions and frequencies - Result
+SELECT * FROM Top_5_conditions
 
+-- COMMAND ----------
+
+-- DBTITLE 1,Question 4: 10 most common non-pharma company - View
+CREATE OR REPLACE TEMP VIEW Non_pharma_company AS
 WITH Top_10_sponsor AS (
     SELECT c.Sponsor, COUNT(Id) AS count
     FROM bdtt_task.clinicaltrial2023 c
@@ -185,6 +202,11 @@ WITH Top_10_sponsor AS (
 )
 SELECT *
 FROM Top_10_sponsor;
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Question 4: 10 most common non-pharma company - Result
+SELECT * FROM Non_pharma_company
 
 -- COMMAND ----------
 
