@@ -211,4 +211,21 @@ ORDER BY Month;
 
 -- COMMAND ----------
 
-
+-- DBTITLE 1,Further Analysis 3: Year to Date Total Clinical Trials
+WITH completion_year AS (
+    SELECT Start, Id
+    FROM bdtt_task.clinicaltrial2023
+    WHERE SUBSTRING(Start, 1, 4) <= '2024'
+),
+completion_year_extract AS (
+    SELECT *, YEAR(Start) AS Start_year
+    FROM completion_year
+),
+yearly_study AS (
+    SELECT Start_year, Count(Id) AS Total_Study
+    FROM completion_year_extract
+    GROUP BY 1
+)
+SELECT *
+FROM yearly_study
+ORDER BY Start_year;
